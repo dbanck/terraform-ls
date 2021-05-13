@@ -350,7 +350,8 @@ func TestModuleManager_ModuleCandidatesByPath(t *testing.T) {
 
 			w := SyncWalker(fs, mm)
 			w.SetLogger(testLogger())
-			err = w.StartWalking(ctx, tc.walkerRoot)
+			w.EnqueuePath(tc.walkerRoot)
+			err = w.StartWalking(ctx)
 			if err != nil {
 				t.Fatal(err)
 			}
@@ -437,18 +438,18 @@ func TestSchemaForVariables(t *testing.T) {
 	}
 
 	mod.Meta.Variables = map[string]tfmodule.Variable{
-		"name": tfmodule.Variable{
+		"name": {
 			Description: "name of the module",
 			Type:        cty.String,
 		},
 	}
 	expectedSchema := &schema.BodySchema{Attributes: map[string]*schema.AttributeSchema{
-		"name": &schema.AttributeSchema{
+		"name": {
 			Description: lang.MarkupContent{
 				Value: "name of the module",
 				Kind:  lang.PlainTextKind,
 			},
-			Expr: schema.ExprConstraints{schema.LiteralTypeExpr{cty.String}},
+			Expr: schema.ExprConstraints{schema.LiteralTypeExpr{Type: cty.String}},
 		},
 	}}
 

@@ -55,7 +55,10 @@ func initializeResponse(t *testing.T, commandPrefix string) string {
 					"full": false
 				},
 				"workspace": {
-					"workspaceFolders": {}
+					"workspaceFolders": {
+						"supported": true,
+						"changeNotifications": "workspace/didChangeWorkspaceFolders"
+					}
 				}
 			},
 			"serverInfo": {
