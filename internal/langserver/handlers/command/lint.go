@@ -5,7 +5,6 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	"log"
 	"os/exec"
 
 	"github.com/creachadair/jrpc2/code"
@@ -80,24 +79,22 @@ func LintHandler(ctx context.Context, args cmd.CommandArgs) (interface{}, error)
 	if err != nil {
 		return nil, err
 	}
-	log.Printf("HELLLOOOOO")
 
 	cmd := exec.Command("/usr/local/bin/tflint", "--format=json", mod.Path)
 	var outBuf = bytes.Buffer{}
 	cmd.Stdout = &outBuf
 
-	err = cmd.Run()
-	if err != nil {
-		log.Fatal(err)
-	}
-	log.Printf("OUTPUT %#v", outBuf)
+	cmd.Run()
+	// err = cmd.Run()
+	// if err != nil {
+	// 	log.Fatal(err)
+	// }
 
 	var ret TfLintOutput
 	jsonErr := json.Unmarshal(outBuf.Bytes(), &ret)
 	if jsonErr != nil {
 		return nil, jsonErr
 	}
-	log.Printf("RET %#v", ret)
 
 	diags := diagnostics.NewDiagnostics()
 	lintDiags := HCLDiagsFromTfLint(ret.Issues)
