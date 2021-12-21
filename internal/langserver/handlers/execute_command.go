@@ -16,6 +16,7 @@ var handlers = cmd.Handlers{
 	cmd.Name("module.callers"):     command.ModuleCallersHandler,
 	cmd.Name("terraform.init"):     command.TerraformInitHandler,
 	cmd.Name("terraform.validate"): command.TerraformValidateHandler,
+	cmd.Name("terraform.lint"):     command.LintHandler,
 	cmd.Name("module.calls"):       command.ModuleCallsHandler,
 	cmd.Name("module.providers"):   command.ModuleProvidersHandler,
 }
