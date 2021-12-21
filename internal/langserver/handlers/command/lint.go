@@ -6,6 +6,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"os/exec"
+	"path/filepath"
 
 	"github.com/creachadair/jrpc2/code"
 	"github.com/hashicorp/hcl/v2"
@@ -114,7 +115,7 @@ func HCLDiagsFromTfLint(jsonDiags []TfLintIssue) map[string]hcl.Diagnostics {
 	for _, d := range jsonDiags {
 		file := ""
 		if d.Range != nil {
-			file = d.Range.Filename
+			file = filepath.Base(d.Range.Filename)
 		}
 
 		diags := diagsMap[file]
@@ -134,7 +135,7 @@ func HCLDiagsFromTfLint(jsonDiags []TfLintIssue) map[string]hcl.Diagnostics {
 
 		if d.Range != nil {
 			diag.Subject = &hcl.Range{
-				Filename: d.Range.Filename,
+				Filename: filepath.Base(d.Range.Filename),
 				Start: hcl.Pos{
 					Line:   d.Range.Start.Line,
 					Column: d.Range.Start.Column,
