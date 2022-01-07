@@ -22,14 +22,15 @@ func (h *logHandler) TextDocumentCodeAction(ctx context.Context, params lsp.Code
 
 func (h *logHandler) textDocumentCodeAction(ctx context.Context, params lsp.CodeActionParams) ([]lsp.CodeAction, error) {
 	var ca []lsp.CodeAction
+	h.logger.Printf("CODE ACTIONS HERE")
 
 	// For action definitions, refer to https://code.visualstudio.com/api/references/vscode-api#CodeActionKind
 	// We only support format type code actions at the moment, and do not want to format without the client asking for
 	// them, so exit early here if nothing is requested.
-	if len(params.Context.Only) == 0 {
-		h.logger.Printf("No code action requested, exiting")
-		return ca, nil
-	}
+	// if len(params.Context.Only) == 0 {
+	// 	h.logger.Printf("No code action requested, exiting")
+	// 	return ca, nil
+	// }
 
 	for _, o := range params.Context.Only {
 		h.logger.Printf("Code actions requested: %q", o)
@@ -60,6 +61,16 @@ func (h *logHandler) textDocumentCodeAction(ctx context.Context, params lsp.Code
 
 	for action := range wantedCodeActions {
 		switch action {
+		case lsp.QuickFix:
+			ca = append(ca, lsp.CodeAction{
+				Title: "Fix issue",
+				Kind:  action,
+				// Edit:  lsp.WorkspaceEdit{},
+				Command: &lsp.Command{
+					Title:   "Fill me",
+					Command: "notsupported",
+				},
+			})
 		case ilsp.SourceFormatAllTerraform:
 			tfExec, err := module.TerraformExecutorForModule(ctx, fh.Dir())
 			if err != nil {
