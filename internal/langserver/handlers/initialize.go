@@ -25,6 +25,7 @@ func (svc *service) Initialize(ctx context.Context, params lsp.InitializeParams)
 				ResolveProvider:   false,
 				TriggerCharacters: []string{".", "["},
 			},
+			// TODO? check for CodeActionLiteralSupport
 			CodeActionProvider: lsp.CodeActionOptions{
 				CodeActionKinds: ilsp.SupportedCodeActions.AsSlice(),
 				ResolveProvider: false,

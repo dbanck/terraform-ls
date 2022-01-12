@@ -33,6 +33,7 @@ var (
 	SupportedCodeActions = CodeActions{
 		SourceFormatAllTerraform: true,
 		lsp.QuickFix:             true,
+		lsp.RefactorExtract:      true,
 	}
 )
 
