@@ -3,10 +3,24 @@ package handlers
 import (
 	"context"
 
+	"github.com/hashicorp/hcl/v2"
 	lsctx "github.com/hashicorp/terraform-ls/internal/context"
 	ilsp "github.com/hashicorp/terraform-ls/internal/lsp"
 	lsp "github.com/hashicorp/terraform-ls/internal/protocol"
 )
+
+type Diagnostic struct {
+	Range    hcl.Range
+	Severity hcl.DiagnosticSeverity
+
+	Code            string
+	CodeDescription string
+
+	Source  string
+	Message string
+
+	Data interface{}
+}
 
 func (svc *service) TextDocumentHover(ctx context.Context, params lsp.TextDocumentPositionParams) (*lsp.Hover, error) {
 	fs, err := lsctx.DocumentStorage(ctx)

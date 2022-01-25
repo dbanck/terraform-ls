@@ -28,6 +28,11 @@ type Options struct {
 	TerraformExecPath    string `mapstructure:"terraformExecPath"`
 	TerraformExecTimeout string `mapstructure:"terraformExecTimeout"`
 	TerraformLogFilePath string `mapstructure:"terraformLogFilePath"`
+
+	LintOnSave   string   `mapstructure:"lintOnSave"`
+	LintTool     string   `mapstructure:"lintTool"`
+	LintExecPath string   `mapstructure:"lintExecPath"`
+	LintFlags    []string `mapstructure:"lintFlags"`
 }
 
 func (o *Options) Validate() error {
