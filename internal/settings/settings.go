@@ -6,6 +6,7 @@ import (
 	"path/filepath"
 	"strings"
 
+	"github.com/hashicorp/hcl/v2"
 	"github.com/hashicorp/terraform-ls/internal/terraform/datadir"
 	"github.com/mitchellh/mapstructure"
 )
@@ -29,10 +30,21 @@ type Options struct {
 	TerraformExecTimeout string `mapstructure:"terraformExecTimeout"`
 	TerraformLogFilePath string `mapstructure:"terraformLogFilePath"`
 
-	LintOnSave   string   `mapstructure:"lintOnSave"`
-	LintTool     string   `mapstructure:"lintTool"`
-	LintExecPath string   `mapstructure:"lintExecPath"`
-	LintFlags    []string `mapstructure:"lintFlags"`
+	// Can be "off" or "module"
+	LintOnSave string `mapstructure:"lintOnSave"`
+	// Can be "tflint" or "config-lint"
+	LintTool string `mapstructure:"lintTool"`
+	// Optional, e.g. "/usr/local/bin/tflint"
+	LintExecPath string `mapstructure:"lintExecPath"`
+	// Optional, e.g ["--force", "--loglevel=trace"]
+	LintFlags []string `mapstructure:"lintFlags"`
+}
+
+type Linter interface {
+	Name() string
+	ExecPath() string
+	ExecArgs() []string
+	Lint() ([]hcl.Diagnostic, error)
 }
 
 func (o *Options) Validate() error {
