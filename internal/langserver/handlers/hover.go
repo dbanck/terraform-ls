@@ -10,15 +10,24 @@ import (
 )
 
 type Diagnostic struct {
+	Dir      string
+	Filename string
 	Range    hcl.Range
 	Severity hcl.DiagnosticSeverity
 
-	Code            string
+	// The diagnostic's code, which might appear in the user interface
+	// e.g. "terraform_deprecated_interpolation"
+	Code string
+	// An optional property to describe the error code
 	CodeDescription string
 
-	Source  string
+	// A human-readable string describing the source, e.g. "tflint"
+	Source string
+	// The diagnostic's message.
+	// e.g. "Interpolation-only expressions are deprecated"
 	Message string
 
+	// Optional data entry field
 	Data interface{}
 }
 
